@@ -24,7 +24,8 @@ function handleResize() {
     if (config.is1D) {
         // 1D Mode: Render Width x 1
         // We set the internal size to Width x 1
-        renderer.setSize(width, config.renderHeight, false); 
+        // Using Math.floor to ensure integer dimensions
+        renderer.setSize(Math.floor(width), config.renderHeight, false); 
         
         // We calculate a vertical FOV that results in a ~90 degree Horizontal FOV
         // tan(hFOV/2) = aspect * tan(vFOV/2)
@@ -81,8 +82,11 @@ function animate() {
 
     // Move Player
     // Forward/Back
-    player.translateZ(-movement.forward * 10 * delta);
-    player.translateX(movement.right * 10 * delta);
+    // Add simple bounds check or clamp if needed, but world is open.
+    // Adjust speed.
+    const speed = 10;
+    player.translateZ(-movement.forward * speed * delta);
+    player.translateX(movement.right * speed * delta);
     
     // Rotate Player (Yaw)
     player.rotation.y -= movement.rotateX * 2.0 * delta;

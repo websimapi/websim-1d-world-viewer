@@ -2,12 +2,13 @@ import * as THREE from 'three';
 
 export function createScene() {
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
-    scene.fog = new THREE.FogExp2(0x000000, 0.02);
+    // Dark grey background instead of black to distinguish "working but looking at void" from "broken"
+    scene.background = new THREE.Color(0x222222);
+    scene.fog = new THREE.FogExp2(0x222222, 0.02);
 
     // Player Rig
     const player = new THREE.Group();
-    player.position.set(0, 2, 0); // Eye height
+    player.position.set(0, 1.5, 0); // Eye height - slightly lower to catch more ground/objects
     scene.add(player);
 
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -98,6 +99,13 @@ export function createScene() {
     }
     wallGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     scene.add(wall);
+
+    // 5. Center Marker (Always visible at start)
+    const markerGeo = new THREE.BoxGeometry(1, 100, 1);
+    const markerMat = new THREE.MeshBasicMaterial({ color: 0xff00ff }); // Magenta
+    const marker = new THREE.Mesh(markerGeo, markerMat);
+    marker.position.set(0, 0, -5); // Directly in front
+    scene.add(marker);
 
 
     let totalTime = 0;
